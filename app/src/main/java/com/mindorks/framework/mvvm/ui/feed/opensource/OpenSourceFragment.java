@@ -43,8 +43,7 @@ public class OpenSourceFragment extends BaseFragment<FragmentOpenSourceBinding, 
     LinearLayoutManager mLayoutManager;
     @Inject
     OpenSourceAdapter mOpenSourceAdapter;
-    @Inject
-    ViewModelProviderFactory factory;
+
     private OpenSourceViewModel mOpenSourceViewModel;
 
     public static OpenSourceFragment newInstance() {
@@ -65,10 +64,10 @@ public class OpenSourceFragment extends BaseFragment<FragmentOpenSourceBinding, 
     }
 
     @Override
-    public OpenSourceViewModel getViewModel() {
-        mOpenSourceViewModel = ViewModelProviders.of(this, factory).get(OpenSourceViewModel.class);
-        return mOpenSourceViewModel;
+    public Class<OpenSourceViewModel> getViewModelClass() {
+        return OpenSourceViewModel.class;
     }
+
 
     @Override
     public void handleError(Throwable throwable) {
@@ -78,6 +77,7 @@ public class OpenSourceFragment extends BaseFragment<FragmentOpenSourceBinding, 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mOpenSourceViewModel = getViewModel();
         mOpenSourceViewModel.setNavigator(this);
         mOpenSourceAdapter.setListener(this);
     }

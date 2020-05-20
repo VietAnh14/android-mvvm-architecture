@@ -24,9 +24,16 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mindorks.framework.mvvm.ViewModelProviderFactory;
+
+import javax.inject.Inject;
+
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -39,6 +46,9 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     private View mRootView;
     private T mViewDataBinding;
     private V mViewModel;
+
+    @Inject
+    ViewModelProviderFactory factory;
 
     /**
      * Override for set binding variable
@@ -55,11 +65,15 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     int getLayoutId();
 
     /**
-     * Override for set view model
-     *
      * @return view model instance
      */
-    public abstract V getViewModel();
+    protected V getViewModel() {
+        return mViewModel != null ? mViewModel : new ViewModelProvider(this, factory).get(getViewModelClass());
+    }
+
+
+    // Override for getting view model class
+    public abstract Class<V> getViewModelClass();
 
     @Override
     public void onAttach(Context context) {
@@ -96,7 +110,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
-        mViewDataBinding.setLifecycleOwner(this);
+        mViewDataBinding.setLifecycleOwner(getViewLifecycleOwner());
         mViewDataBinding.executePendingBindings();
     }
 

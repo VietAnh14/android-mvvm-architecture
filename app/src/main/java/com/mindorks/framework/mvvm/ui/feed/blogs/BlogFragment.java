@@ -44,8 +44,7 @@ public class BlogFragment extends BaseFragment<FragmentBlogBinding, BlogViewMode
     FragmentBlogBinding mFragmentBlogBinding;
     @Inject
     LinearLayoutManager mLayoutManager;
-    @Inject
-    ViewModelProviderFactory factory;
+
     private BlogViewModel mBlogViewModel;
 
     public static BlogFragment newInstance() {
@@ -66,10 +65,10 @@ public class BlogFragment extends BaseFragment<FragmentBlogBinding, BlogViewMode
     }
 
     @Override
-    public BlogViewModel getViewModel() {
-        mBlogViewModel = ViewModelProviders.of(this, factory).get(BlogViewModel.class);
-        return mBlogViewModel;
+    public Class<BlogViewModel> getViewModelClass() {
+        return BlogViewModel.class;
     }
+
 
     @Override
     public void handleError(Throwable throwable) {
@@ -79,6 +78,7 @@ public class BlogFragment extends BaseFragment<FragmentBlogBinding, BlogViewMode
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mBlogViewModel = getViewModel();
         mBlogViewModel.setNavigator(this);
         mBlogAdapter.setListener(this);
     }

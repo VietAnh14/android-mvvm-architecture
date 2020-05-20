@@ -33,8 +33,6 @@ import javax.inject.Inject;
 public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewModel> implements AboutNavigator {
 
     public static final String TAG = AboutFragment.class.getSimpleName();
-    @Inject
-    ViewModelProviderFactory factory;
     private AboutViewModel mAboutViewModel;
 
     public static AboutFragment newInstance() {
@@ -55,10 +53,10 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
     }
 
     @Override
-    public AboutViewModel getViewModel() {
-        mAboutViewModel = ViewModelProviders.of(this,factory).get(AboutViewModel.class);
-        return mAboutViewModel;
+    public Class<AboutViewModel> getViewModelClass() {
+        return AboutViewModel.class;
     }
+
 
     @Override
     public void goBack() {
@@ -68,6 +66,7 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAboutViewModel = getViewModel();
         mAboutViewModel.setNavigator(this);
     }
 }
