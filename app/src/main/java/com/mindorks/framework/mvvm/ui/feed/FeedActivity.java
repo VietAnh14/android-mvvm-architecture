@@ -16,25 +16,26 @@
 
 package com.mindorks.framework.mvvm.ui.feed;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
+import android.view.MenuItem;
+
 import androidx.core.app.NavUtils;
 import androidx.core.app.TaskStackBuilder;
-import android.view.MenuItem;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.tabs.TabLayout;
 import com.mindorks.framework.mvvm.BR;
 import com.mindorks.framework.mvvm.R;
-import com.mindorks.framework.mvvm.ViewModelProviderFactory;
 import com.mindorks.framework.mvvm.databinding.ActivityFeedBinding;
 import com.mindorks.framework.mvvm.ui.base.BaseActivity;
+
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import javax.inject.Inject;
 
 /**
  * Created by amitshekhar on 10/07/17.
@@ -46,8 +47,7 @@ public class FeedActivity extends BaseActivity<ActivityFeedBinding, FeedViewMode
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
     @Inject
     FeedPagerAdapter mPagerAdapter;
-    @Inject
-    ViewModelProviderFactory factory;
+
     private ActivityFeedBinding mActivityFeedBinding;
     private FeedViewModel mFeedViewModel;
 
@@ -66,9 +66,8 @@ public class FeedActivity extends BaseActivity<ActivityFeedBinding, FeedViewMode
     }
 
     @Override
-    public FeedViewModel getViewModel() {
-        mFeedViewModel = new ViewModelProvider(this,factory).get(FeedViewModel.class);
-        return mFeedViewModel;
+    public Class<FeedViewModel> getViewModelClass() {
+        return FeedViewModel.class;
     }
 
     @Override
@@ -104,6 +103,7 @@ public class FeedActivity extends BaseActivity<ActivityFeedBinding, FeedViewMode
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFeedViewModel = getViewModel();
         mActivityFeedBinding = getViewDataBinding();
         setUp();
     }

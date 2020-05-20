@@ -35,8 +35,6 @@ import javax.inject.Inject;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator {
 
-    @Inject
-    ViewModelProviderFactory factory;
     private LoginViewModel mLoginViewModel;
     private ActivityLoginBinding mActivityLoginBinding;
 
@@ -55,9 +53,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     }
 
     @Override
-    public LoginViewModel getViewModel() {
-        mLoginViewModel = ViewModelProviders.of(this,factory).get(LoginViewModel.class);
-        return mLoginViewModel;
+    public Class<LoginViewModel> getViewModelClass() {
+        return LoginViewModel.class;
     }
 
     @Override
@@ -88,6 +85,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityLoginBinding = getViewDataBinding();
+        mLoginViewModel = getViewModel();
         mLoginViewModel.setNavigator(this);
     }
 }

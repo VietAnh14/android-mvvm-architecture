@@ -57,8 +57,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-    @Inject
-    ViewModelProviderFactory factory;
     private ActivityMainBinding mActivityMainBinding;
     private SwipePlaceHolderView mCardsContainerView;
     private DrawerLayout mDrawer;
@@ -82,9 +80,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     @Override
-    public MainViewModel getViewModel() {
-        mMainViewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        return mMainViewModel;
+    public Class<MainViewModel> getViewModelClass() {
+        return MainViewModel.class;
     }
 
     @Override
@@ -159,6 +156,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityMainBinding = getViewDataBinding();
+        mMainViewModel = getViewModel();
         mMainViewModel.setNavigator(this);
         setUp();
     }

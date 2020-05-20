@@ -35,9 +35,6 @@ import javax.inject.Inject;
 
 public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashViewModel> implements SplashNavigator {
 
-    @Inject
-    ViewModelProviderFactory factory;
-    
     private SplashViewModel mSplashViewModel;
 
     @Override
@@ -51,10 +48,10 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
     }
 
     @Override
-    public SplashViewModel getViewModel() {
-        mSplashViewModel = ViewModelProviders.of(this,factory).get(SplashViewModel.class);
-        return mSplashViewModel;
+    public Class<SplashViewModel> getViewModelClass() {
+        return SplashViewModel.class;
     }
+
 
     @Override
     public void openLoginActivity() {
@@ -73,6 +70,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSplashViewModel = getViewModel();
         mSplashViewModel.setNavigator(this);
         mSplashViewModel.startSeeding();
     }

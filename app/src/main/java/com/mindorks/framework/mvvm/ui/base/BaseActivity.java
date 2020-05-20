@@ -27,11 +27,18 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import com.mindorks.framework.mvvm.ViewModelProviderFactory;
 import com.mindorks.framework.mvvm.ui.login.LoginActivity;
 import com.mindorks.framework.mvvm.utils.CommonUtils;
 import com.mindorks.framework.mvvm.utils.NetworkUtils;
+
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjection;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -48,6 +55,9 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     private ProgressDialog mProgressDialog;
     private T mViewDataBinding;
     private V mViewModel;
+
+    @Inject
+    ViewModelProviderFactory factory;
 
     /**
      * Override for set binding variable
@@ -68,7 +78,15 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
      *
      * @return view model instance
      */
-    public abstract V getViewModel();
+    protected V getViewModel() {
+        return mViewModel != null ? mViewModel : createViewModel();
+    }
+
+    private V createViewModel() {
+        return new ViewModelProvider(this, factory).get(getViewModelClass());
+    }
+
+    public abstract Class<V> getViewModelClass();
 
     @Override
     public void onFragmentAttached() {
@@ -145,7 +163,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     private void performDataBinding() {
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
-        this.mViewModel = mViewModel == null ? getViewModel() : mViewModel;
+        this.mViewModel = getViewModel();
         mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
         mViewDataBinding.executePendingBindings();
     }
