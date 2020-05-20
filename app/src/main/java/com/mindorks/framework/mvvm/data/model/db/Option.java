@@ -19,6 +19,7 @@ package com.mindorks.framework.mvvm.data.model.db;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -32,7 +33,7 @@ import com.google.gson.annotations.SerializedName;
                 entity = Question.class,
                 parentColumns = "id",
                 childColumns = "question_id"
-        )
+        ), indices = {@Index(value = "question_id")}
 )
 public class Option {
 

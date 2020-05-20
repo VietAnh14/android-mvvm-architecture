@@ -1,5 +1,6 @@
 package com.mindorks.framework.mvvm;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import com.mindorks.framework.mvvm.data.DataManager;
@@ -32,6 +33,7 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
   }
 
 
+  @NonNull
   @Override
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(AboutViewModel.class)) {

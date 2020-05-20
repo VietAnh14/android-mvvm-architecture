@@ -16,6 +16,7 @@
 
 package com.mindorks.framework.mvvm.ui.feed;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -66,7 +67,7 @@ public class FeedActivity extends BaseActivity<ActivityFeedBinding, FeedViewMode
 
     @Override
     public FeedViewModel getViewModel() {
-        mFeedViewModel = ViewModelProviders.of(this,factory).get(FeedViewModel.class);
+        mFeedViewModel = new ViewModelProvider(this,factory).get(FeedViewModel.class);
         return mFeedViewModel;
     }
 
